@@ -30,8 +30,17 @@ jobs:
       - name: Fix build files
         run: |
           printf '%s\n' 'android.useAndroidX=true' 'android.enableJetifier=true' >> source/BhojpuriDubbingAI/android/gradle.properties
+
           cd source/BhojpuriDubbingAI/android
+
           sed -i '1i import org.gradle.api.initialization.resolve.RepositoriesMode' settings.gradle.kts
+
+          sed -i '/android {/a\
+              compileOptions {\
+                  sourceCompatibility = JavaVersion.VERSION_17\
+                  targetCompatibility = JavaVersion.VERSION_17\
+              }' app/build.gradle.kts
+
           sed -i 's/\.observe(this){w->/\.observeForever{w->/' app/src/main/java/com/example/bhojpuridubbingai/MainActivity.kt
 
       - name: Build APK
